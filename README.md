@@ -1,3 +1,6 @@
+
+![Uploading Banner de rama 2.png…]()
+
 Repositorio DWF_TH242684 - Ciclo 02 🚀 ¡Bienvenido/a al repositorio oficial de la materia DWF_TH242684 para el Ciclo 02! 📚
 
 Este espacio es mantenido por Sara Yamileth Torres Henriquez (Carnet: TH242684). Está diseñado para centralizar y organizar todo el material de estudio relevante para nuestro curso. Aquí encontrarás de forma estructurada:
