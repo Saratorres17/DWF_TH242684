@@ -1,5 +1,5 @@
+<img width="1920" height="720" alt="Banner de rama 2" src="https://github.com/user-attachments/assets/faf64150-7e5a-4842-93d8-bf255662e7f3" />
 
-![Uploading Banner de rama 2.png…]()
 
 Repositorio DWF_TH242684 - Ciclo 02 🚀 ¡Bienvenido/a al repositorio oficial de la materia DWF_TH242684 para el Ciclo 02! 📚
 
