@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cliente JWT - Guía 10 DWF</title>
+  <style>
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; margin: 2rem; line-height: 1.4; }
+    h1 { margin-top: 0; }
+    label { display:block; margin: 0.5rem 0 0.2rem; }
+    input { padding: 0.5rem; width: 300px; max-width: 100%; }
+    button { padding: 0.6rem 1rem; margin-top: 0.8rem; cursor: pointer; }
+    code, pre { background: #f4f4f8; padding: 0.5rem; border-radius: 6px; display: block; overflow:auto; }
+    .row { display:flex; gap:2rem; flex-wrap: wrap; }
+    .card { border: 1px solid #e5e7eb; border-radius: 12px; padding: 1rem; width: 360px; max-width: 100%; }
+    .small { font-size: 0.9rem; color:#4b5563 }
+  </style>
+</head>
+<body>
+  <h1>Cliente JWT – Guía 10 DWF</h1>
+  <p class="small">Backend esperado en <code>http://localhost:8080</code>. Endpoint de login: <code>/api/auth/login</code>.</p>
+
+  <div class="row">
+    <div class="card">
+      <h2>1) Iniciar sesión</h2>
+      <label for="username">Usuario</label>
+      <input id="username" value="testuser" />
+      <label for="password">Contraseña</label>
+      <input id="password" type="password" value="testpassword" />
+      <button id="btnLogin">Iniciar sesión</button>
+      <p class="small">Credenciales por defecto según la guía: <code>testuser / testpassword</code></p>
+      <h3>Token</h3>
+      <pre id="tokenBox">(aún no hay token)</pre>
+    </div>
+
+    <div class="card">
+      <h2>2) Llamar endpoint protegido</h2>
+      <p>Si tu backend expone un endpoint protegido (por ejemplo <code>GET /api/secure/hello</code>), puedes llamarlo aquí.</p>
+      <label for="secureUrl">URL</label>
+      <input id="secureUrl" value="http://localhost:8080/api/secure/hello" />
+      <button id="btnSecure">Consumir protegido</button>
+      <h3>Respuesta</h3>
+      <pre id="secureResp">(sin respuesta)</pre>
+      <p class="small">Si tu proyecto aún no tiene un endpoint protegido, agrega uno como:<br/>
+      <code>GET /api/secure/hello</code> que retorne un texto (ver documento de entrega).</p>
+    </div>
+  </div>
+
+  <script>
+    let jwtToken = null;
+
+    async function login() {
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+      const tokenBox = document.getElementById('tokenBox');
+
+      try {
+        const res = await fetch('http://localhost:8080/api/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, password })
+        });
+        const data = await res.text(); // backend devuelve el token como string puro según guía
+        jwtToken = data;
+        tokenBox.textContent = data || '(no se recibió token)';
+      } catch (err) {
+        tokenBox.textContent = 'Error: ' + err.message;
+      }
+    }
+
+    async function callSecure() {
+      const url = document.getElementById('secureUrl').value;
+      const out = document.getElementById('secureResp');
+      try {
+        const res = await fetch(url, {
+          headers: { 'Authorization': 'Bearer ' + (jwtToken || '') }
+        });
+        const text = await res.text();
+        out.textContent = text;
+      } catch (err) {
+        out.textContent = 'Error: ' + err.message;
+      }
+    }
+
+    document.getElementById('btnLogin').addEventListener('click', login);
+    document.getElementById('btnSecure').addEventListener('click', callSecure);
+  </script>
+</body>
+</html>
