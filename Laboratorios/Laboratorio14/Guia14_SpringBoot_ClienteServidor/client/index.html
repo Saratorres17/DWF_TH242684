@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cliente → API Spring Boot</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 720px; margin: 2rem auto; }
+    pre { background: #f4f4f4; padding: 1rem; overflow: auto; }
+    label, input, button { font-size: 1rem; margin: 0.5rem 0; }
+    button { background: #2563eb; color: white; border: none; padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; }
+    button:hover { background: #1e40af; }
+  </style>
+</head>
+<body>
+  <h1>Cliente → API Spring Boot</h1>
+
+  <label for="baseUrl">API base URL:</label>
+  <input id="baseUrl" type="text" size="40" value="http://localhost:8080" />
+  <button id="btnFetch">Llamar /example</button>
+
+  <h2>Respuesta del servidor</h2>
+  <pre id="output">Haz clic en el botón para probar la conexión...</pre>
+
+  <script>
+    const $ = (s) => document.querySelector(s);
+    $("#btnFetch").addEventListener("click", async () => {
+      const base = $("#baseUrl").value.replace(/\/+$/, "");
+      const url = base + "/example";
+      $("#output").textContent = "Conectando con " + url + " ...";
+      try {
+        const res = await fetch(url);
+        const text = await res.text();
+        try {
+          $("#output").textContent = JSON.stringify(JSON.parse(text), null, 2);
+        } catch {
+          $("#output").textContent = text;
+        }
+      } catch (err) {
+        $("#output").textContent = "Error al conectar: " + err;
+      }
+    });
+  </script>
+</body>
+</html>
